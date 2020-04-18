@@ -1,0 +1,16 @@
+{
+  "name": "cours_javaScript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel ./index.html"
+  },
+  "keywords": [],
+  "author": "veggiemonk <julien.bisconti@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel": "^1.12.4",
+    "sass": "^1.26.3"
+  }
+}
