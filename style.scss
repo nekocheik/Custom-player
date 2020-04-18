@@ -1,0 +1,21 @@
+.container__video {
+  display: table;
+  position: relative;
+  .button__play__pause {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    margin: auto;
+    &.state__pause {
+      background: blue;
+    }
+    &.state__play {
+      background: red;
+    }
+  }
+  // 
+}

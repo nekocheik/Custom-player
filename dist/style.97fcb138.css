@@ -1,2 +1,22 @@
+.container__video {
+  display: table;
+  position: relative;
+}
+.container__video .button__play__pause {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  margin: auto;
+}
+.container__video .button__play__pause.state__pause {
+  background: blue;
+}
+.container__video .button__play__pause.state__play {
+  background: red;
+}
 
 /*# sourceMappingURL=/style.97fcb138.css.map */

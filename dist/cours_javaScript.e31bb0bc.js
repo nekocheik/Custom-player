@@ -123,20 +123,34 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   containersVideos.forEach(function (containerVideos) {
     var allVideo = containerVideos.querySelectorAll("video");
 
+    var setGoodStateButtonPlay = function setGoodStateButtonPlay(button, video) {
+      button.className = "button__play__pause";
+
+      if (video.paused) {
+        button.classList.add("state__pause");
+      } else {
+        button.classList.add("state__play");
+      }
+    };
+
     var videoPlayPause = function videoPlayPause(button, video) {
       if (video.paused) {
         video.play();
       } else {
         video.pause();
       }
+
+      setGoodStateButtonPlay(button, video);
     };
 
     var createPlayPause = function createPlayPause(container, video) {
       var buttonPlaypause = document.createElement('span');
       buttonPlaypause.className = "button__play__pause";
+      setGoodStateButtonPlay(buttonPlaypause, video);
       buttonPlaypause.addEventListener('click', function () {
         videoPlayPause(buttonPlaypause, video);
       });
+      container.appendChild(buttonPlaypause);
     };
 
     var createElementPlayer = function createElementPlayer(container, video) {
@@ -184,7 +198,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61116" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62593" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
