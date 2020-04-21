@@ -17,5 +17,17 @@
       background: red;
     }
   }
+  .button__mute {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: rgb(127, 127, 139);
+    bottom: 0px;
+    right: 0px;
+    z-index: 200;
+    &.mute {
+      background: red;
+    }
+  }
   // 
 }

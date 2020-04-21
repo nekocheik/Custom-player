@@ -119,54 +119,89 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   return newRequire;
 })({"index.js":[function(require,module,exports) {
 (function () {
-  var containersVideos = document.querySelectorAll('.videos');
-  containersVideos.forEach(function (containerVideos) {
-    var allVideo = containerVideos.querySelectorAll("video");
+  var memo = 0;
+  document.addEventListener('mouseover', function () {
+    memo++;
 
-    var setGoodStateButtonPlay = function setGoodStateButtonPlay(button, video) {
-      button.className = "button__play__pause";
+    if (memo > 1) {
+      return;
+    }
 
-      if (video.paused) {
-        button.classList.add("state__pause");
-      } else {
-        button.classList.add("state__play");
-      }
-    };
+    var containersVideos = document.querySelectorAll('.videos');
+    containersVideos.forEach(function (containerVideos) {
+      var allVideo = containerVideos.querySelectorAll("video");
 
-    var videoPlayPause = function videoPlayPause(button, video) {
-      if (video.paused) {
-        video.play();
-      } else {
-        video.pause();
-      }
+      var setGoodStateButtonPlay = function setGoodStateButtonPlay(button, video) {
+        button.className = "button__play__pause";
 
-      setGoodStateButtonPlay(button, video);
-    };
+        if (video.paused) {
+          button.classList.add("state__pause");
+        } else {
+          button.classList.add("state__play");
+        }
+      };
 
-    var createPlayPause = function createPlayPause(container, video) {
-      var buttonPlaypause = document.createElement('span');
-      buttonPlaypause.className = "button__play__pause";
-      setGoodStateButtonPlay(buttonPlaypause, video);
-      buttonPlaypause.addEventListener('click', function () {
-        videoPlayPause(buttonPlaypause, video);
+      var setGoodStateMute = function setGoodStateMute(button, video) {
+        button.className = "button__mute";
+
+        if (video.muted) {
+          button.classList.add("mute");
+        }
+      };
+
+      var videoPlayPause = function videoPlayPause(button, video) {
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+
+        setGoodStateButtonPlay(button, video);
+      };
+
+      var createElementDom = function createElementDom() {
+        var elementName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "span";
+        var className = arguments.length > 1 ? arguments[1] : undefined;
+        var callBack = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};
+        var element = document.createElement(elementName);
+        element.className = className;
+        element.addEventListener('click', function () {
+          callBack(element);
+        });
+        return element;
+      };
+
+      var createMutButton = function createMutButton(container, video) {
+        var btnMute = createElementDom('span', "button__mute", function (element) {
+          video.muted = video.muted === true ? false : true;
+          setGoodStateMute(element, video);
+        });
+        setGoodStateMute(btnMute, video);
+        container.appendChild(btnMute);
+      };
+
+      var createPlayPause = function createPlayPause(container, video) {
+        var btnPlaypause = createElementDom('span', "button__play__pause", function (button) {
+          videoPlayPause(button, video);
+        });
+        setGoodStateButtonPlay(btnPlaypause, video);
+        container.appendChild(btnPlaypause);
+      };
+
+      var createElementPlayer = function createElementPlayer(container, video) {
+        createPlayPause(container, video), createMutButton(container, video);
+      };
+
+      var createVideoPlayer = function createVideoPlayer(video) {
+        var containerVideo = createElementDom("div", "container__video");
+        containerVideo.prepend(video);
+        containerVideos.appendChild(containerVideo);
+        createElementPlayer(containerVideo, video);
+      };
+
+      allVideo.forEach(function (video) {
+        createVideoPlayer(video);
       });
-      container.appendChild(buttonPlaypause);
-    };
-
-    var createElementPlayer = function createElementPlayer(container, video) {
-      createPlayPause(container, video);
-    };
-
-    var createVideoPlayer = function createVideoPlayer(video) {
-      var containerVideo = document.createElement("div");
-      containerVideo.className = "container__video";
-      containerVideo.prepend(video);
-      containerVideos.appendChild(containerVideo);
-      createElementPlayer(containerVideo, video);
-    };
-
-    allVideo.forEach(function (video) {
-      createVideoPlayer(video);
     });
   });
 })();
@@ -198,7 +233,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62593" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61565" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,5 +1,11 @@
 (()=>{
-  const containersVideos = document.querySelectorAll('.videos')
+  let memo = 0 
+  document.addEventListener(('mouseover'), ()=> {
+    memo++
+    if ( memo > 1) {
+      return
+    }
+    const containersVideos = document.querySelectorAll('.videos')  
   containersVideos.forEach((containerVideos)=> {
     const allVideo = containerVideos.querySelectorAll("video")
 
@@ -12,6 +18,13 @@
       } 
     }
 
+    const setGoodStateMute= (button, video) => {
+      button.className = "button__mute"
+      if (video.muted) {
+        button.classList.add("mute")
+      }
+    }
+    
     const videoPlayPause = (button, video) => {
       if ( video.paused ) {
         video.play()
@@ -21,23 +34,40 @@
       setGoodStateButtonPlay( button, video )
     }
 
-    const createPlayPause = (container, video) => {
-      let buttonPlaypause = document.createElement('span')
-      buttonPlaypause.className = "button__play__pause"
-      setGoodStateButtonPlay( buttonPlaypause, video )
-      buttonPlaypause.addEventListener('click', ()=> {
-        videoPlayPause(buttonPlaypause, video)
+    const createElementDom = (elementName = "span" , className, callBack = ()=> { }) => {
+      let element = document.createElement(elementName)
+      element.className = className;
+      element.addEventListener('click', function (){
+        callBack(element)
       })
-      container.appendChild(buttonPlaypause)
+
+      return element
+    }
+
+    const createMutButton = (container, video) => {
+      let btnMute = createElementDom('span',"button__mute", (element) => {
+        video.muted = video.muted === true ? false : true
+        setGoodStateMute(element , video )
+      })
+      setGoodStateMute(btnMute, video )
+      container.appendChild(btnMute)
+    }
+
+    const createPlayPause = (container, video) => {
+      let btnPlaypause = createElementDom('span',"button__play__pause", (button) => {
+        videoPlayPause(button, video)
+      })
+      setGoodStateButtonPlay(btnPlaypause, video )
+      container.appendChild(btnPlaypause)
     }
 
     const createElementPlayer = (container, video) => {
-      createPlayPause(container, video)
+      createPlayPause(container, video),
+      createMutButton(container, video)
     }
 
     const createVideoPlayer = (video) => {
-      const containerVideo = document.createElement("div")
-      containerVideo.className = "container__video"
+      const containerVideo = createElementDom( "div","container__video");
       containerVideo.prepend(video)
       containerVideos.appendChild(containerVideo)
       createElementPlayer(containerVideo, video)
@@ -46,5 +76,8 @@
     allVideo.forEach(( video )=>{
       createVideoPlayer(video)
     })
+
   })
+  })
+
 })()
